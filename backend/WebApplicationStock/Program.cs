@@ -1,5 +1,8 @@
 
 
+using Application.Services;
+using Application.Interfaces;
+using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -48,13 +51,14 @@ builder.Services.AddDbContext<AppDbContext>(opcion =>
 #endregion
 
 #region Repositories
-
+//se inyecta RepositoryBase para poder hacer un Service Base.
+builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 
 
 #endregion
 
 #region Services
-
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 #endregion

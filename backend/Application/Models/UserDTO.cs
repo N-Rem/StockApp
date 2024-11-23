@@ -1,17 +1,17 @@
 ﻿using Domain.Enums;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities;
 
-namespace Domain.Entities
+namespace Application.Models
 {
-    public class User
+    public class UserDTO
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -23,18 +23,42 @@ namespace Domain.Entities
 
         [Required]
         [RegularExpression(@"^[a-zA-Z0-9]{6, }$", ErrorMessage = "The password must be 6 or more characters, numbers and letter.")]
-        public string Password { get; set; }
+        public string Password { get; set; } //Este no va
 
         [Required]
         [Phone(ErrorMessage = "The phone number is not valid.")]
         public string Phone { get; set; }
 
-        [ForeignKey("OwnerId")]
         public int? OwnerId { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(10)")]
         public UserType Type { get; set; }
+    
+
+    public static UserDTO Create (User u)
+    {
+        var dto = new UserDTO();
+        dto.Id = u.Id; 
+        dto.Name = u.Name;
+        dto.Email = u.Email;
+        dto.Password = u.Password; //no va
+        dto.Phone = u.Phone;
+        dto.OwnerId = u.OwnerId;
+        dto.Type = u.Type;
+        return dto;
+    }
+
+    public static List<UserDTO?> CreateList(IEnumerable<User> users)
+    {
+        List<UserDTO?> listDto = [];
+
+        foreach (var u in users)
+        {
+            listDto.Add(Create(u));
+        }
+
+        return listDto;
+    }
 
     }
 }
