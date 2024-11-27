@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241123185646_fixUser")]
-    partial class fixUser
+    [Migration("20241127221546_CorrectMigrationUser")]
+    partial class CorrectMigrationUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,9 +228,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsOwner")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -248,6 +245,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
