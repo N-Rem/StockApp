@@ -31,6 +31,13 @@ namespace Infrastructure.Data
                 .HasForeignKey(u => u.OwnerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Type)
+                    .HasConversion<string>() // Convierte el enum a un string
+                    .HasMaxLength(20); //Define un tamaño máximo
+            });
+
             modelBuilder.Entity<Branch>()
                 .HasOne<User>() //Tiene un dueño
                 .WithMany()

@@ -9,6 +9,6 @@ namespace Domain.Interfaces
 {
     public interface IRepositoryUser : IRepositoryBase<User>
     {
-        User GetByEmail(string email);
+        Task<User> GetByEmailAsync(string email);
     }
 }

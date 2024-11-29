@@ -225,9 +225,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsOwner")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -245,6 +242,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
