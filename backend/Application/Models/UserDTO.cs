@@ -34,29 +34,29 @@ namespace Application.Models
         public UserType Type { get; set; }
     
 
-    public static UserDTO Create (User u)
-    {
-        var dto = new UserDTO();
-        dto.Id = u.Id; 
-        dto.Name = u.Name;
-        dto.Email = u.Email;
-        dto.Phone = u.Phone;
-        dto.OwnerId = u.OwnerId;
-        dto.Type = u.Type;
-        return dto;
-    }
-
-    public static List<UserDTO?> CreateList(IEnumerable<User> users)
-    {
-        List<UserDTO?> listDto = [];
-
-        foreach (var u in users)
+        public static UserDTO Create (User u)
         {
-            listDto.Add(Create(u));
+            var dto = new UserDTO();
+            dto.Id = u.Id; 
+            dto.Name = u.Name;
+            dto.Email = u.Email;
+            dto.Phone = u.Phone;
+            dto.OwnerId = u.OwnerId;
+            dto.Type = u.Type;
+            return dto;
         }
 
-        return listDto;
-    }
+        public static List<UserDTO?> CreateList(IEnumerable<User> users)
+        {
+            List<UserDTO?> listDto = [];
+
+            foreach (var u in users)
+            {
+                listDto.Add(Create(u));
+            }
+
+            return listDto;
+        }
 
     }
 }
