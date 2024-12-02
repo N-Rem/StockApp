@@ -1,4 +1,4 @@
-namespace UnitTestingAppStock
+namespace ApplicationStockTest
 {
     [TestClass]
     public class UnitTest1
