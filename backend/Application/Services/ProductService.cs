@@ -124,7 +124,6 @@ namespace Application.Services
 
 
 
-
         private async Task<Product> FoundProductByIdAsync(int id)
         {
             var product = await _repositoryProduct.GetByIdAsync(id)
@@ -136,7 +135,7 @@ namespace Application.Services
         {
             var exist = await _repositoryProduct.GetByNameAsync(nameProduct);
 
-            if (exist != null) throw new NotFoundException("Product name already exists");
+            if (exist != null) throw new Exception("Product name already exists");
         }
 
     }
