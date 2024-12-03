@@ -32,6 +32,11 @@ namespace Application.Models
         {
             var dto = new BranchDTO();
             dto.Id = b.Id;
+            dto.Name = b.Name;
+            dto.Addres = b.Addres;
+            dto.Description = b.Description;
+            dto.Tel = b.Tel;
+            dto.OwnerId = b.OwnerId;
             return dto;
         }
 

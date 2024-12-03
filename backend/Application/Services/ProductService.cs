@@ -88,7 +88,7 @@ namespace Application.Services
 
                 obj.Name = request.Name;
                 obj.Description = request.Description;
-                obj.Price = request.Price;
+                obj.Price = request.Price; //HACER ALGO SI NO SE MODIFICA
                 obj.MinimumQuantity = request.MinimumQuantity;
 
                 await _repositoryProduct.UpdateAsync(obj);

@@ -55,13 +55,14 @@ builder.Services.AddDbContext<AppDbContext>(opcion =>
 builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 builder.Services.AddScoped<IRepositoryProduct, RepositoryProduct>();
 builder.Services.AddScoped<IRepositoryBranch, RepositoryBranch>();
-
+builder.Services.AddScoped<IRepositoryHistoricalPrice, RepositoryHistoricalPrice>();
 #endregion
 
 #region Services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IBranchService, BranchService>();
+builder.Services.AddScoped<IHistoricalPriceService, HistoricalPriceService>();  
 
 #endregion
 

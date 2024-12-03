@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain.Entities;
+using Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,13 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    internal class RepositoryBranchTransaction
+    public class RepositoryBranchTransaction : RepositoryBase<BranchTransaction>, IRepositoryBranchTransaction
     {
+        private readonly AppDbContext _context;
+
+        public RepositoryBranchTransaction(AppDbContext context) : base(context)
+        {
+            _context = context;
+        }
     }
 }
