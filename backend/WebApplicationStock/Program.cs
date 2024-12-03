@@ -54,12 +54,14 @@ builder.Services.AddDbContext<AppDbContext>(opcion =>
 //se inyecta RepositoryBase para poder hacer un Service Base.
 builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 builder.Services.AddScoped<IRepositoryProduct, RepositoryProduct>();
+builder.Services.AddScoped<IRepositoryBranch, RepositoryBranch>();
 
 #endregion
 
 #region Services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IBranchService, BranchService>();
 
 #endregion
 
