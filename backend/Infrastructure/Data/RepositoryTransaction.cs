@@ -15,6 +15,9 @@ namespace Infrastructure.Data
         {
             _context = context;
         }
+        //Traerme el ulitmo registro para calcular en servicio
+
+
 
     }
 }

@@ -1,32 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Application.Models.Requests
 {
-    public class Branch
+    public class SupplierCreateRequestDTO
     {
-        [Key]
-        public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }
 
         [Required]
-        public string Addres { get; set; }
-
-        [Required]
         public string Description { get; set; }
 
         [Required]
-        public string Tel { get; set; }
+        public string Address { get; set; }
 
         [Required]
-        [ForeignKey(nameof(OwnerId))]
-        public int OwnerId { get; set; }
+        [RegularExpression(@"^\d{3} \d{3} \d{4}$", ErrorMessage = "The phone number must be in the format xxx xxx xxxx.")]
+        public string Tel { get; set; }
     }
 }

@@ -23,6 +23,6 @@ namespace Domain.Entities
 
         [Required]
         [Phone(ErrorMessage = "The phone number is not valid.")]
-        public int Tel { get; set; }
+        public string Tel { get; set; }
     }
 }

@@ -81,7 +81,7 @@ namespace Application.Services
             try
             {
                 await MailExistsAsync(request.Email);
-
+                //Comporbar si existe el id del dueño.
                 var newEmployee = new User();
                 newEmployee.OwnerId = request.OwnerId;
                 newEmployee.Name = request.Name;

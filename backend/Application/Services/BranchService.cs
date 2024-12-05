@@ -82,7 +82,6 @@ namespace Application.Services
             try
             {
                 var obj = await FoundBranchByIdAsync(id);
-                await FoundBranchByNameAsync(request.Name);
 
                 obj.Name = request.Name;
                 obj.Addres = request.Addres;
@@ -148,9 +147,9 @@ namespace Application.Services
             return branch;
         }
 
-        private async Task FoundBranchByNameAsync(string nameProduct)
+        private async Task FoundBranchByNameAsync(string nameBranch)
         {
-            var exist = await _repositoryBranch.GetByNameAsync(nameProduct);
+            var exist = await _repositoryBranch.GetByNameAsync(nameBranch);
 
             if (exist != null) throw new Exception("Branch name already exists");
         }

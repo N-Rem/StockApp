@@ -22,7 +22,7 @@ namespace Domain.Entities
         public string Email { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9]{6, }$", ErrorMessage = "The password must be 6 or more characters, numbers and letter.")]
+        [RegularExpression(@"^[a-zA-Z0-9]{6,}$", ErrorMessage = "The password must be 6 or more characters, numbers and letter.")]
         public string Password { get; set; }
 
         [Required]

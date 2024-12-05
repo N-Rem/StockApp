@@ -7,23 +7,15 @@ using System.Threading.Tasks;
 
 namespace Application.Models.Requests
 {
-    public class BranchCreateRequestDTO
+    public class SupplierUpdateRequestDTO
     {
-        [Required]
         public string Name { get; set; }
 
-        [Required]
-        public string Addres { get; set; }
-
-        [Required]
         public string Description { get; set; }
 
-        [Required]
+        public string Address { get; set; }
 
         [RegularExpression(@"^\d{3} \d{3} \d{4}$", ErrorMessage = "The phone number must be in the format xxx xxx xxxx.")]
         public string Tel { get; set; }
-
-        [Required]
-        public int OwnerId { get; set; }
     }
 }

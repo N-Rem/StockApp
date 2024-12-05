@@ -9,6 +9,6 @@ namespace Domain.Interfaces
 {
     public interface IRepositorySupplier : IRepositoryBase<Supplier>
     {
-
+        Task<Supplier> GetByNameAsync(string name);
     }
 }

@@ -8,22 +8,22 @@ namespace WebApplicationStock.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class SupplierProductController : ControllerBase
     {
-        private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        private readonly ISupplierProductService _supplierProductService;
+
+        public SupplierProductController(ISupplierProductService supplierProductService)
         {
-            _productService = productService;
+            _supplierProductService = supplierProductService;
         }
 
-
         [HttpGet("[Action]")]
-        public async Task<IActionResult> GetAll() 
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-                var products = await _productService.GetAllAsync();
-                return Ok(products); 
+                var list = await _supplierProductService.GetAllAsync();
+                return Ok(list);
             }
             catch (NotFoundException ex)
             {
@@ -36,30 +36,12 @@ namespace WebApplicationStock.Controllers
         }
 
         [HttpGet("[Action]/{id}")]
-        public async Task<IActionResult> GetById([FromRoute]int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
             try
             {
-                var product = await _productService.GetByIdAsync(id);
-                return Ok(product);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex) 
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet("[Action]/{name}")]
-        public async Task<IActionResult> GetByName([FromRoute]string name)
-        {
-            try
-            {
-                var product = await _productService.GetByNameAsync(name);
-                return Ok(product);
+                var obj = await _supplierProductService.GetByIdAsync(id);
+                return Ok(obj);
             }
             catch (NotFoundException ex)
             {
@@ -72,12 +54,27 @@ namespace WebApplicationStock.Controllers
         }
 
         [HttpPost("[Action]")]
-        public async Task<IActionResult> Create([FromBody]ProductCreateRequestDTO request)
+        public async Task<IActionResult> Create([FromBody] SupplierProductCreateRequestDTO request)
         {
             try
             {
-                var product = await _productService.CreateAsync(request);
-                return Ok(product);
+                var obj = await _supplierProductService.CreateAsync(request);
+                return Ok(obj);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("[Action]/{id}")]
+        public async Task<IActionResult> Update([FromBody] SupplierProductUpdateRequestDTO request, [FromRoute] int id)
+        {
+            try
+            {
+                await _supplierProductService.UpdateAsync(request, id);
+                return Ok();
             }
             catch (NotFoundException ex)
             {
@@ -89,40 +86,23 @@ namespace WebApplicationStock.Controllers
             }
         }
 
-        [HttpPut("[Action]/{id}")]
-        public async Task<IActionResult> Update([FromBody] ProductUpdateRequestDTO request, [FromRoute]int id)
+        [HttpDelete("[Action]/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
             {
-                await _productService.UpdateAsync(request, id);
+                await _supplierProductService.DeleteAsync(id);
                 return Ok();
             }
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
-        [HttpDelete("[Action]/{id}")]
-        public async Task<IActionResult> Delete ([FromRoute] int id)
-        {
-            try
-            {
-                await _productService.DeleteAsync(id);
-                return Ok();
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex) 
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
     }
 }

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Application.Models.Requests
 {
-    public class HistoricalPriceUpdateRequestDTO
+    public class SupplierProductUpdateRequestDTO
     {
+        public int SupplierId { get; set; }
 
-
+        public int ProductId { get; set; }
     }
 }

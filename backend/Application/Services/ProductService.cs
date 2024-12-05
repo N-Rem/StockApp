@@ -84,7 +84,6 @@ namespace Application.Services
             try
             {
                 var obj = await FoundProductByIdAsync(id);
-                await FoundProductByNameAsync(request.Name);
 
                 obj.Name = request.Name;
                 obj.Description = request.Description;
@@ -121,6 +120,24 @@ namespace Application.Services
             }
         }
 
+        public async Task<ProductDTO> GetByNameAsync(string name)
+        {
+
+            try
+            {
+                var obj = await _repositoryProduct.GetByNameAsync(name)
+                    ?? throw new NotFoundException("Prodcut not found by Name");
+                return ProductDTO.Create(obj);
+            }
+            catch (NotFoundException ex)
+            {
+                throw new NotFoundException("Product not found", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An Unexpected error ocurred", ex);
+            }
+        }
 
 
 
