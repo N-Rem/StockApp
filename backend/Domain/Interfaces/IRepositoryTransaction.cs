@@ -9,6 +9,7 @@ namespace Domain.Interfaces
 {
     public interface IRepositoryTransaction : IRepositoryBase<Transaction>
     {
-
+        Task<Transaction?> GetLastTransactionByBranchAsync(int branchId);
+        Task<IEnumerable<Transaction?>?> GetTransacionByBranchAsync(int branchId, int productId);
     }
 }

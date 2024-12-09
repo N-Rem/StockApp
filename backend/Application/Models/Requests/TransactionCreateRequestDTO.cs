@@ -13,16 +13,19 @@ namespace Application.Models.Requests
         [Required]
         public decimal Money { get; set; } //dinero que entra o sale
 
-        [Required]
-        public decimal TotalQuantity { get; set; } //total de productos
+        //total de productos
 
         [Required]
         public decimal Quantity { get; set; } // cantidad que sale o entra
 
         [Required]
-        public bool IsIncome { get; set; } //si es ingreso + | si es egreso -
+        public bool IsIncome { get; set; } //si es ingreso + money(+) quantity(-) | si es egreso - money(-) quantity(+)
 
         [Required]
         public int ProductId { get; set; }
+
+        [Required]
+        public int BranchId { get; set; }
+
     }
 }

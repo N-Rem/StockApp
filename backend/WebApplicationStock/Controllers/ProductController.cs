@@ -107,6 +107,42 @@ namespace WebApplicationStock.Controllers
             }
         }
 
+        [HttpPut("[Action]/{id}")]
+        public async Task<IActionResult> UpdateExceptPrice([FromBody] ProductUpdateRequestDTO request, [FromRoute] int id)
+        {
+            try
+            {
+                await _productService.UpdateExceptPriceAsync(request, id);
+                return Ok();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("[Action]/{id}")]
+        public async Task<IActionResult> UpdateProductPrice([FromBody] ProductUpdateRequestDTO request, [FromRoute] int id)
+        {
+            try
+            {
+                await _productService.UpdateProductPriceAsync(request, id);
+                return Ok();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpDelete("[Action]/{id}")]
         public async Task<IActionResult> Delete ([FromRoute] int id)
         {

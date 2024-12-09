@@ -16,9 +16,13 @@ namespace Application.Services
     public class ProductService : IProductService
     {
         private readonly IRepositoryProduct _repositoryProduct;
-        public ProductService (IRepositoryProduct repositoryProduct)
+        private readonly IRepositorySupplier _repositorySupplier;
+        private readonly IRepositorySupplierProduct _repositorySupplierProduct;
+        public ProductService (IRepositoryProduct repositoryProduct, IRepositorySupplier repositorySupplier, IRepositorySupplierProduct repositorySupplierProduct)
         {
             _repositoryProduct = repositoryProduct;
+            _repositorySupplier = repositorySupplier;
+            _repositorySupplierProduct = repositorySupplierProduct;
         }
 
         public async Task<List<ProductDTO>> GetAllAsync ()
@@ -63,6 +67,7 @@ namespace Application.Services
             try
             {
                 await FoundProductByNameAsync(request.Name);
+                var supplier = await FoundSupplierByIdAsync(request.SupplierId);
 
                 var obj = new Product();
                 obj.Name = request.Name;
@@ -71,6 +76,12 @@ namespace Application.Services
                 obj.MinimumQuantity = request.MinimumQuantity;
 
                 var newObj = await _repositoryProduct.AddAsync(obj);
+
+                var newObjSp = new SupplierProduct();
+                newObjSp.ProductId = obj.Id;
+                newObjSp.SupplierId = supplier.Id;
+                await _repositorySupplierProduct.AddAsync(newObjSp);
+
                 return ProductDTO.Create(obj);
             }
             catch (Exception ex)
@@ -79,7 +90,7 @@ namespace Application.Services
             }
         }
 
-        public async Task UpdateAsync(ProductUpdateRequestDTO request, int id)
+        public async Task UpdateAsync(ProductUpdateRequestDTO request, int id) //modifica todo
         {
             try
             {
@@ -87,11 +98,51 @@ namespace Application.Services
 
                 obj.Name = request.Name;
                 obj.Description = request.Description;
-                obj.Price = request.Price; //HACER ALGO SI NO SE MODIFICA
+                obj.Price = request.Price; 
                 obj.MinimumQuantity = request.MinimumQuantity;
 
                 await _repositoryProduct.UpdateAsync(obj);
 
+            }
+            catch (NotFoundException ex)
+            {
+                throw new NotFoundException("Product not found", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An Unexpected error ocurred", ex);
+            }
+        }
+
+        public async Task UpdateExceptPriceAsync(ProductUpdateRequestDTO request, int id)
+        {
+            try
+            {
+                var obj = await FoundProductByIdAsync(id);
+
+                obj.Name = request.Name;
+                obj.Description = request.Description;
+                obj.MinimumQuantity = request.MinimumQuantity;
+
+                await _repositoryProduct.UpdateProductExceptPriceAsync(obj);
+            }
+            catch (NotFoundException ex)
+            {
+                throw new NotFoundException("Product not found", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An Unexpected error ocurred", ex);
+            }
+        }
+
+        public async Task UpdateProductPriceAsync(ProductUpdateRequestDTO request, int id)
+        {
+            try
+            {
+                var obj = await FoundProductByIdAsync(id);
+
+                await _repositoryProduct.UpdateProductPriceAsync(obj, request.Price);
             }
             catch (NotFoundException ex)
             {
@@ -155,5 +206,11 @@ namespace Application.Services
             if (exist != null) throw new Exception("Product name already exists");
         }
 
+        private async Task<Supplier> FoundSupplierByIdAsync(int id)
+        {
+            var obj = await _repositorySupplier.GetByIdAsync(id)
+                ?? throw new NotFoundException("Not Found Supplier by Id");
+            return obj;
+        }
     }
 }

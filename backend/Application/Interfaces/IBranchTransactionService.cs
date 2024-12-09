@@ -12,7 +12,6 @@ namespace Application.Interfaces
     {
         Task<IEnumerable<BranchTransactionDTO>> GetAllAsync();
         Task<BranchTransactionDTO> GetByIdAsync(int id);
-        Task<BranchTransactionDTO> CreateAsync(BranchTransactionCreateRequestDTO request);
         Task UpdateAsync(BranchTransactionUpdateRequestDTO request, int id);
         Task DeleteAsync(int id);
 

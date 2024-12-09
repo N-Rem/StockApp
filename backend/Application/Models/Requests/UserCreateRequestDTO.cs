@@ -27,7 +27,7 @@ namespace Application.Models.Requests
         [RegularExpression(@"^\d{3} \d{3} \d{4}$", ErrorMessage = "The phone number must be in the format xxx xxx xxxx.")]
         public string Phone { get; set; }
 
-        public int? OwnerId { get; set; }
+        public int OwnerId { get; set; }
 
         [Required]
         [JsonConverter(typeof(JsonStringEnumConverter))]

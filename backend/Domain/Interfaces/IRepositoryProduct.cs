@@ -10,5 +10,7 @@ namespace Domain.Interfaces
     public interface IRepositoryProduct : IRepositoryBase<Product>
     {
         Task<Product> GetByNameAsync(string nameProduct);
+        Task UpdateProductPriceAsync(Product updateProduct, decimal newPrice);
+        Task UpdateProductExceptPriceAsync(Product updatedProduct);
     }
 }

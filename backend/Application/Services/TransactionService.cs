@@ -15,10 +15,16 @@ namespace Application.Services
     public class TransactionService : ITransactionService
     {
         private readonly IRepositoryTransaction _repositoryTransaction;
+        private readonly IRepositoryProduct _repositoryProduct;
+        private readonly IRepositoryBranchTransaction _repositoryBranchTransaction;
+        private readonly IRepositoryBranch _repositoryBranch;
         
-        public TransactionService(IRepositoryTransaction repositoryTransaction)
+        public TransactionService(IRepositoryTransaction repositoryTransaction, IRepositoryProduct repositoryProduct, IRepositoryBranchTransaction repositoryBranchTransaction, IRepositoryBranch repositoryBranch)
         {
             _repositoryTransaction = repositoryTransaction;
+            _repositoryProduct = repositoryProduct;
+            _repositoryBranchTransaction = repositoryBranchTransaction;
+            _repositoryBranch = repositoryBranch;
         }
 
 
@@ -62,16 +68,35 @@ namespace Application.Services
         {
             try
             {
-                var obj = new Transaction();
-                obj.Money = request.Money;
-                obj.TotalQuantity = request.TotalQuantity;
-                obj.Quantity = request.Quantity;
-                obj.IsIncome = request.IsIncome;
+                var product = await FoundProductByIdAsync(request.ProductId);
+                var branch = await FoundBranchByIdAsync(request.BranchId);
 
-                obj.ProductId = request.ProductId;
+                var branchsTransaction = await _repositoryTransaction.GetTransacionByBranchAsync(branch.Id, product.Id); 
+                //puede devolver una []
+                var lastTransactionProduct = branchsTransaction.OrderByDescending(t => t?.Id).FirstOrDefault();
+
+                var newTransaction = CalculateTransaction(lastTransactionProduct, request);
+
+                var lastTransaction = await _repositoryTransaction.GetLastTransactionByBranchAsync(branch.Id);
+                if(lastTransaction != null)
+                {
+                    newTransaction.Money = request.IsIncome
+                    ? lastTransaction.Money + request.Money
+                    : lastTransaction.Money - request.Money;
+                }
                 
-                var newObj = await _repositoryTransaction.AddAsync(obj);
+                var newObj = await _repositoryTransaction.AddAsync(newTransaction);
+                
+                var objBt = new BranchTransaction();
+                objBt.BranchId = branch.Id;
+                objBt.TransactionId = newObj.Id;
+                var newObjBt = await _repositoryBranchTransaction.AddAsync(objBt);
+
                 return TransactionDTO.Create(newObj);
+            }
+            catch (NotFoundException ex)
+            {
+                throw new NotFoundException("ProductId or BrnachId Not Found", ex);
             }
             catch (Exception ex)
             {
@@ -83,16 +108,12 @@ namespace Application.Services
         {
             try
             {
-                var obj = await FoundTransactionByIdAsync(id);
+                var product = await FoundProductByIdAsync(request.ProductId);
 
-                obj.Money = request.Money;
-                obj.TotalQuantity = request.TotalQuantity;
-                obj.Quantity = request.Quantity;
-                obj.IsIncome = request.IsIncome;
-                obj.ProductId= request.ProductId;
+                var obj = await FoundTransactionByIdAsync(id);
+                obj.ProductId= product.Id;
 
                 await _repositoryTransaction.UpdateAsync(obj);
-
             }
             catch (NotFoundException ex)
             {
@@ -121,6 +142,33 @@ namespace Application.Services
             }
         }
 
+        private Transaction CalculateTransaction(Transaction? lastTransactionProduct, TransactionCreateRequestDTO request)
+        {
+            var obj = new Transaction();
+            obj.IsIncome = request.IsIncome;
+            obj.ProductId = request.ProductId;
+
+            if (lastTransactionProduct != null)
+            {
+                obj.Money = request.IsIncome
+                    ? lastTransactionProduct.Money + request.Money
+                    : lastTransactionProduct.Money - request.Money;
+
+                obj.Quantity = request.Quantity;
+
+                obj.TotalQuantity = request.IsIncome
+                    ? lastTransactionProduct.TotalQuantity - request.Quantity
+                    : lastTransactionProduct.TotalQuantity + request.Quantity;
+            }
+            else
+            {
+                obj.Money = request.Money;
+                obj.Quantity = request.Quantity;
+                obj.TotalQuantity = request.Quantity;
+            }
+
+            return obj;
+        }
 
 
         private async Task<Transaction> FoundTransactionByIdAsync(int id)
@@ -128,6 +176,20 @@ namespace Application.Services
             var transaction = await _repositoryTransaction.GetByIdAsync(id)
                 ?? throw new NotFoundException("Not Found Transaction Id");
             return transaction;
+        }
+
+        private async Task<Product> FoundProductByIdAsync(int id)
+        {
+            var product = await _repositoryProduct.GetByIdAsync(id)
+                ?? throw new NotFoundException("Not Found Product Id");
+            return product;
+        }
+
+        private async Task<Branch> FoundBranchByIdAsync(int id)
+        {
+            var branch = await _repositoryBranch.GetByIdAsync(id)
+                ?? throw new NotFoundException("Not Found Branch Id");
+            return branch;
         }
 
     }

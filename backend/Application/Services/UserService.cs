@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,18 +81,19 @@ namespace Application.Services
         {
             try
             {
+                var owner = await _repositoryUser.GetOwnerById(request.OwnerId)
+                    ?? throw new NotFoundException("OwnerId not found");
                 await MailExistsAsync(request.Email);
-                //Comporbar si existe el id del dueño.
                 var newEmployee = new User();
-                newEmployee.OwnerId = request.OwnerId;
+                newEmployee.OwnerId = owner.Id;
                 newEmployee.Name = request.Name;
                 newEmployee.Email = request.Email;
                 newEmployee.Phone = request.Phone;
                 newEmployee.Type = Domain.Enums.UserType.Employee;
                 newEmployee.Password = request.Password;
 
-                var owner = await _repositoryUser.AddAsync(newEmployee);
-                return UserDTO.Create(owner);
+                var employee = await _repositoryUser.AddAsync(newEmployee);
+                return UserDTO.Create(employee);
             }
             catch (NotFoundException ex)
             {

@@ -60,30 +60,8 @@ namespace Application.Services
             }
         }
 
-        public async Task<BranchTransactionDTO> CreateAsync(BranchTransactionCreateRequestDTO request)
-        {
-            try
-            {
-                //Fucnion para verificar si existen los ids
-                await FoundBranchByIdAsync(request.BranchId);
-                await FoundTransactionByIdAsync(request.TransactionId);
-
-                var obj = new BranchTransaction();
-
-                obj.TransactionId = request.TransactionId;
-                obj.BranchId = request.BranchId;
-
-                var newObj = await _repositoryBranchTransaction.AddAsync(obj);
-                return BranchTransactionDTO.Create(newObj);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An unexpected error occurred", ex);
-            }
-
-        }
-
-        public async Task UpdateAsync(BranchTransactionUpdateRequestDTO request, int id)
+        public async Task UpdateAsync(BranchTransactionUpdateRequestDTO request, int id) 
+            //¿esto tiene sentido? creo que se deberia borrar todo este servicio
         {
             try
             {

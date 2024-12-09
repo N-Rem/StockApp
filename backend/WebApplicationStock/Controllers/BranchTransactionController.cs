@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplicationStock.Controllers
-{
+{//Tiene sentido usar un controlador para una tabla intermedia en este caso?
     [Route("api/[controller]")]
     [ApiController]
     public class BranchTransactionController : ControllerBase
@@ -52,21 +52,6 @@ namespace WebApplicationStock.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-        }
-
-        [HttpPost("[Action]")]
-        public async Task<IActionResult> Create([FromBody] BranchTransactionCreateRequestDTO request)
-        {
-            try
-            {
-                var obj = await _branchTransactionService.CreateAsync(request);
-                return Ok(obj);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-
         }
 
         [HttpPut("[Action]/{id}")]

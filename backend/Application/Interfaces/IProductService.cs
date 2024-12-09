@@ -15,6 +15,9 @@ namespace Application.Interfaces
 
         Task<ProductDTO> CreateAsync(ProductCreateRequestDTO request);
         Task UpdateAsync(ProductUpdateRequestDTO request, int id);
+        Task UpdateExceptPriceAsync(ProductUpdateRequestDTO request, int id);
+        Task UpdateProductPriceAsync(ProductUpdateRequestDTO request, int id);
+
         Task DeleteAsync(int id);
         Task<ProductDTO> GetByNameAsync(string name);
 
