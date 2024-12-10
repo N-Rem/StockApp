@@ -30,7 +30,6 @@ namespace Application.Models
         public int? OwnerId { get; set; }
 
         [Required]
-        [JsonConverter(typeof(StringEnumConverter))]
         public UserType Type { get; set; }
     
 

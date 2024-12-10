@@ -19,7 +19,9 @@ namespace Application.Models.Requests
         public string Description { get; set; }
 
         [Required]
-        public int Tel { get; set; }
+
+        [RegularExpression(@"^\d{3} \d{3} \d{4}$", ErrorMessage = "The phone number must be in the format xxx xxx xxxx.")]
+        public string Tel { get; set; }
 
         [Required]
         public int OwnerId { get; set; }

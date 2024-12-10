@@ -23,7 +23,7 @@ namespace Domain.Entities
         public string Description { get; set; }
 
         [Required]
-        public int Tel { get; set; }
+        public string Tel { get; set; }
 
         [Required]
         [ForeignKey(nameof(OwnerId))]

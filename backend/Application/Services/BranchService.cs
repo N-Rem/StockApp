@@ -15,10 +15,12 @@ namespace Application.Services
     public class BranchService: IBranchService
     {
         private readonly IRepositoryBranch _repositoryBranch;
+        private readonly IRepositoryUser _repositoryUser;
 
-        public BranchService(IRepositoryBranch repositoriesBranch)
+        public BranchService(IRepositoryBranch repositoriesBranch, IRepositoryUser repositoryUser)
         {
             _repositoryBranch = repositoriesBranch;
+            _repositoryUser = repositoryUser;
         }
 
         public async Task<IEnumerable<BranchDTO>> GetAllAsync()
@@ -61,14 +63,20 @@ namespace Application.Services
             try
             {
                 await FoundBranchByNameAsync(request.Name);
+                var owner = await _repositoryUser.GetOwnerById(request.OwnerId)
+                    ?? throw new NotFoundException("OwnerId not found");
                 var obj = new Branch();
                 obj.Name = request.Name;
                 obj.Addres = request.Addres;
                 obj.Description = request.Description;
                 obj.Tel = request.Tel;
-                obj.OwnerId = request.OwnerId;
+                obj.OwnerId = owner.Id;
                 var newObj = await _repositoryBranch.AddAsync(obj);
                 return BranchDTO.Create(newObj);
+            }
+            catch(NotFoundException ex)
+            {
+                throw new NotFoundException("OwnerId not found");
             }
             catch (Exception ex)
             {
@@ -82,7 +90,6 @@ namespace Application.Services
             try
             {
                 var obj = await FoundBranchByIdAsync(id);
-                await FoundBranchByNameAsync(request.Name);
 
                 obj.Name = request.Name;
                 obj.Addres = request.Addres;
@@ -148,9 +155,9 @@ namespace Application.Services
             return branch;
         }
 
-        private async Task FoundBranchByNameAsync(string nameProduct)
+        private async Task FoundBranchByNameAsync(string nameBranch)
         {
-            var exist = await _repositoryBranch.GetByNameAsync(nameProduct);
+            var exist = await _repositoryBranch.GetByNameAsync(nameBranch);
 
             if (exist != null) throw new Exception("Branch name already exists");
         }

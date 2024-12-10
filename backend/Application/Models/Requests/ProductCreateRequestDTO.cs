@@ -16,11 +16,14 @@ namespace Application.Models.Requests
         [Required]
         public string Description { get; set; }
 
-        [Required] // Agregar una funcion que cuando edite precio cree una fila en historical_prices
+        [Required] 
         public decimal Price { get; set; }
 
         [Required]
         public decimal MinimumQuantity { get; set; }
+
+        [Required] //supplierproduct tabla intermedia
+        public int SupplierId { get; set; }
 
     }
 }

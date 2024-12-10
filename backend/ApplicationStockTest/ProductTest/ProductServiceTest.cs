@@ -19,6 +19,8 @@ namespace ApplicationStockTest.ProductTest
         // sin comprometer la base de datos o otros factoes
         private Mock<IRepositoryProduct> _mockRepository;
         private ProductService _productService;
+        private Mock<IRepositorySupplier> _mockRepositorySuplier;
+        private Mock<IRepositorySupplierProduct> _mockRepositorySuplierProduct;
 
         [TestInitialize]
         public void Setup()
@@ -29,9 +31,16 @@ namespace ApplicationStockTest.ProductTest
 
             //crea un mock de IRepositoryPorduct
             _mockRepository = new Mock<IRepositoryProduct>();
+            _mockRepositorySuplier = new Mock<IRepositorySupplier>();
+            _mockRepositorySuplierProduct = new Mock<IRepositorySupplierProduct>();
 
             //inicializa el Servicio con el mock
-            _productService = new ProductService( _mockRepository.Object );
+            _productService = new ProductService(
+            _mockRepository.Object,
+            _mockRepositorySuplier.Object,
+            _mockRepositorySuplierProduct.Object
+            );
+
         }
 
 

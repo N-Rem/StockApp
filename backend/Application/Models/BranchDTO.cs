@@ -23,7 +23,9 @@ namespace Application.Models
         public string Description { get; set; }
 
         [Required]
-        public int Tel { get; set; }
+
+        [RegularExpression(@"^\d{3}-\d{3}-\d{4}$", ErrorMessage = "The phone number must be in the format xxx-xxx-xxxx.")]
+        public string Tel { get; set; }
 
         [Required]
         public int OwnerId { get; set; }
@@ -32,6 +34,11 @@ namespace Application.Models
         {
             var dto = new BranchDTO();
             dto.Id = b.Id;
+            dto.Name = b.Name;
+            dto.Addres = b.Addres;
+            dto.Description = b.Description;
+            dto.Tel = b.Tel;
+            dto.OwnerId = b.OwnerId;
             return dto;
         }
 

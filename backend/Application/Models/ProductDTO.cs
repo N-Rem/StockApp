@@ -37,7 +37,7 @@ namespace Application.Models
             return dto;
         }
 
-        public static List<ProductDTO> CreateList(IEnumerable<Product> products)
+        public static List<ProductDTO?> CreateList(IEnumerable<Product> products)
         {
             List <ProductDTO>listDto = [];
 

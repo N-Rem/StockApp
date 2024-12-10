@@ -12,8 +12,6 @@ namespace Application.Models.Requests
 {
     public class UserCreateRequestDTO
     {
-        public int Id { get; set; }
-
         [Required]
         public string Name { get; set; }
 
@@ -22,17 +20,17 @@ namespace Application.Models.Requests
         public string Email { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9]{6, }$", ErrorMessage = "The password must be 6 or more characters, numbers and letter.")]
+        [RegularExpression(@"^[a-zA-Z0-9]{6,}$", ErrorMessage = "The password must be 6 or more characters, numbers and letter.")]
         public string Password { get; set; }
 
         [Required]
-        [Phone(ErrorMessage = "The phone number is not valid.")]
+        [RegularExpression(@"^\d{3} \d{3} \d{4}$", ErrorMessage = "The phone number must be in the format xxx xxx xxxx.")]
         public string Phone { get; set; }
 
-        public int? OwnerId { get; set; }
+        public int OwnerId { get; set; }
 
         [Required]
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public UserType Type { get; set; }
     }
 }
