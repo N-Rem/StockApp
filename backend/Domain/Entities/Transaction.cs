@@ -29,6 +29,9 @@ namespace Domain.Entities
         public DateTime Created { get; set; } = DateTime.Now;
 
         [Required]
+        public string Description { get; set; }
+
+        [Required]
         [ForeignKey(nameof(ProductId))]
         public int ProductId { get; set; }
     }

@@ -31,6 +31,9 @@ namespace Application.Models
         [Required]
         public int ProductId { get; set; }
 
+        [Required]
+        public string Description { get; set; }
+
         public static TransactionDTO Create(Transaction t)
         {
             var dto = new TransactionDTO();

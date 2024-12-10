@@ -74,23 +74,23 @@ namespace WebApplicationStock.Controllers
             }
         }
 
-        [HttpPut("[Action]/{id}")]
-        public async Task<IActionResult> Update([FromBody] TransactionUpdateRequestDTO request, [FromRoute] int id)
-        {
-            try
-            {
-                await _transactionService.UpdateAsync(request, id);
-                return Ok();
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
+        //[HttpPut("[Action]/{id}")]
+        //public async Task<IActionResult> Update([FromBody] TransactionUpdateRequestDTO request, [FromRoute] int id)
+        //{
+        //    try
+        //    {
+        //        await _transactionService.UpdateAsync(request, id);
+        //        return Ok();
+        //    }
+        //    catch (NotFoundException ex)
+        //    {
+        //        return NotFound(ex.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+       // }
 
         [HttpDelete("[Action]/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)

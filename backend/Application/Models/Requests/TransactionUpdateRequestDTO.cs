@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 namespace Application.Models.Requests
 {
     public class TransactionUpdateRequestDTO
-    { 
-        public int ProductId { get; set; }
+    {
+        [Required]
+        public string Description { get; set; }
 
     }
 }

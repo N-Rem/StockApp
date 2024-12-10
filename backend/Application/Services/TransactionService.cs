@@ -108,10 +108,8 @@ namespace Application.Services
         {
             try
             {
-                var product = await FoundProductByIdAsync(request.ProductId);
-
                 var obj = await FoundTransactionByIdAsync(id);
-                obj.ProductId= product.Id;
+                obj.Description = request.Description;
 
                 await _repositoryTransaction.UpdateAsync(obj);
             }
@@ -147,6 +145,7 @@ namespace Application.Services
             var obj = new Transaction();
             obj.IsIncome = request.IsIncome;
             obj.ProductId = request.ProductId;
+            obj.Description = request.Description;
 
             if (lastTransactionProduct != null)
             {

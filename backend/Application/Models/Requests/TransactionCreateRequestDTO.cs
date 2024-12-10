@@ -27,5 +27,8 @@ namespace Application.Models.Requests
         [Required]
         public int BranchId { get; set; }
 
+        [Required]
+        public string Description { get; set; }
+
     }
 }
